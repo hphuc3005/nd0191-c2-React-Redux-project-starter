@@ -1,10 +1,9 @@
 import { useNavigate } from "react-router-dom";
 import { NavItem } from "./NavItem";
 import { useEffect } from "react";
-import { checkAuthorization } from "../../helpers/authorization";
 import { useDispatch, useSelector } from "react-redux";
 import { pollsDataActions } from "../../store/pollsDataSlice";
-import { updateUserData } from "../../store/pollsDataAsyncActions";
+import { fetchQuestions, updateUserData } from "../../store/pollsDataAsyncActions";
 
 const navItems = [
     {
@@ -12,8 +11,8 @@ const navItems = [
         link: "/",
     },
     {
-        label: "Dashboard",
-        link: "/dashboard",
+        label: "Leaderboard",
+        link: "/leaderboard",
     },
     {
         label: "New",
@@ -24,16 +23,23 @@ const navItems = [
 export const NavBar = () => {
     const navigate = useNavigate();
     const dispatch = useDispatch();
-    const userData = useSelector((state) => state.pollsData.userData);
+    const userData = useSelector((state) => state.pollsData?.userData);
+    const questionsData = useSelector((state) => state.pollsData?.questionsData);
 
     useEffect(() => {
-        const currentUsername = localStorage.getItem("username");
-        if (!currentUsername && !userData?.id) {
+        const authedUsername = localStorage.getItem("username");
+        if (!authedUsername && !userData?.id) {
             navigate("/login");
-        } else if (currentUsername && !userData?.id) {
-            dispatch(updateUserData({ userid: currentUsername }));
+        } else if (authedUsername && !userData?.id) {
+            dispatch(updateUserData({ userid: authedUsername }));
         }
-    }, [dispatch, navigate, userData, userData.id]);
+    }, [dispatch, navigate, userData]);
+
+    useEffect(() => {
+        if (!questionsData || Object.keys(questionsData).length === 0) {
+            dispatch(fetchQuestions());
+        }
+    }, [dispatch, questionsData]);
 
     const onLogOut = () => {
         localStorage.removeItem("username");
@@ -63,7 +69,7 @@ export const NavBar = () => {
                         />
                     </div>
                     <li className="user-menu-item">
-                        <p>{userData.name}</p>
+                        <p>{userData.id}</p>
                     </li>
                     <li className="user-menu-item">
                         <button onClick={onLogOut}>Logout</button>

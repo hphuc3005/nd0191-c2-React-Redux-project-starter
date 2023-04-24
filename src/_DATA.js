@@ -179,6 +179,8 @@ export function _saveQuestion(question) {
         [formattedQuestion.id]: formattedQuestion
       }
 
+      users[question.author].questions.push(formattedQuestion.id)
+
       resolve(formattedQuestion)
     }, 1000)
   })

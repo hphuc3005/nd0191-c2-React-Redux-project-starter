@@ -1,11 +1,8 @@
 import { Form } from "../common/Form";
 import { Input } from "../common/Input";
-import { useDispatch } from "react-redux";
 import { updateUserData } from "../../store/pollsDataAsyncActions";
 
-export const LogInForm = ({ formError }) => {
-    const dispatch = useDispatch();
-
+export const LogInForm = ({ formError, dispatch }) => {
     const handleSubmit = (formData) => {
         dispatch(updateUserData(formData));
     };
@@ -16,7 +13,7 @@ export const LogInForm = ({ formError }) => {
             submitText="Submit"
             handleSubmit={handleSubmit}
             formError={formError}
-            imageTitle={
+            extraTitle={
                 <div className="login-image">
                     <img
                         src="/images/login_image.jpg"
@@ -29,12 +26,14 @@ export const LogInForm = ({ formError }) => {
         >
             <Input
                 inputName="username"
+                placeholder="Your Username"
                 inputType="text"
                 inputLabel="Username"
                 required={true}
             />
             <Input
                 inputName="password"
+                placeholder="Your Password"
                 inputType="password"
                 inputLabel="Password"
                 required={true}

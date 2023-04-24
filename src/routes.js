@@ -1,14 +1,18 @@
 import { Route, useLocation, useNavigate, useParams } from "react-router-dom";
-import { connect } from "react-redux";
-import { LogIn } from "./pages/LogIn";
-import { Home } from "./pages/Home";
+import { connect, useDispatch } from "react-redux";
+import { LogInPage } from "./pages/LogInPage";
+import { HomePage } from "./pages/HomePage";
+import { QuestionDetailPage } from "./pages/QuestionDetailPage";
+import { LeaderboardPage } from "./pages/LeaderboardPage";
+import { NewPollPage } from "./pages/NewPollPage";
 
 const withRouter = (Component) => {
     const ComponentWithRouterProp = (props) => {
         let location = useLocation();
         let navigate = useNavigate();
         let params = useParams();
-        return <Component {...props} router={{ location, navigate, params }} />;
+        const dispatch = useDispatch();
+        return <Component {...props} router={{ location, navigate, params }} dispatch={dispatch} />;
     };
 
     return ComponentWithRouterProp;
@@ -27,18 +31,37 @@ const mappedComponent = (Component) => {
 
 const routes = [
     {
-        path: "/login",
-        exact: false,
+        path: "/add",
         main: (props) => {
-            const MappedComponent = mappedComponent(LogIn)
+            const MappedComponent = mappedComponent(NewPollPage)
+            return <MappedComponent {...props} />
+        },
+    },
+    {
+        path: "/leaderboard",
+        main: (props) => {
+            const MappedComponent = mappedComponent(LeaderboardPage)
+            return <MappedComponent {...props} />
+        },
+    },
+    {
+        path: "/login",
+        main: (props) => {
+            const MappedComponent = mappedComponent(LogInPage)
+            return <MappedComponent {...props} />
+        },
+    },
+    {
+        path: "/:questionId",
+        main: (props) => {
+            const MappedComponent = mappedComponent(QuestionDetailPage)
             return <MappedComponent {...props} />
         },
     },
     {
         path: "",
-        exact: true,
         main: (props) => {
-            const MappedComponent = mappedComponent(Home)
+            const MappedComponent = mappedComponent(HomePage)
             return <MappedComponent {...props} />
         }
     },
@@ -50,7 +73,6 @@ export const renderRoutes = (props) => {
             <Route
                 key={index}
                 path={route.path}
-                exact={route.exact}
                 element={route.main(props)}
                 {...props}
             />

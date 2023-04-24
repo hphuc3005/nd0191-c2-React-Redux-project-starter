@@ -1,4 +1,11 @@
-export const Input = ({ inputLabel, inputType, inputName, required, value, onChangeValue }) => {
+export const Input = ({
+    inputLabel,
+    inputType,
+    inputName,
+    required,
+    onChangeValue,
+    placeholder,
+}) => {
     return (
         <div>
             <label
@@ -11,9 +18,9 @@ export const Input = ({ inputLabel, inputType, inputName, required, value, onCha
                 id={inputName}
                 name={inputName}
                 type={inputType}
-                value={value}
                 required={required}
-                onChange={(e) => onChangeValue(inputName, e.target.value)}
+                onBlur={(e) => onChangeValue(inputName, e.target.value)}
+                placeholder={placeholder}
             />
         </div>
     );

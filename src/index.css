@@ -134,7 +134,8 @@ button:hover {
   margin-right: 10px;
 }
 
-.navbar-user-avatar img {
+.navbar-user-avatar img,
+.user-row img {
   width: 50px;
   height: 50px;
   border-radius: 50%;
@@ -150,7 +151,7 @@ button:hover {
   flex-wrap: wrap;
   align-content: center;
   align-items: center;
-  margin-top: 20px;
+  margin-top: 50px;
 }
 
 .home {
@@ -171,8 +172,6 @@ button:hover {
   align-content: center;
   align-items: center;
   border-bottom: 1px solid rgba(0, 0, 0, 0.3);
-  /* border-left: 1px solid rgba(0, 0, 0, 0.3); */
-  /* border-radius: 5%; */
   margin: 10px 20px 10px 20px;
   padding: 10px 10px 10px 10px;
   width: 25%;
@@ -182,15 +181,121 @@ button:hover {
   color: rgba(0, 0, 0, 0.55)
 }
 
+.question a {
+  width: 100%;
+}
+
 .question button {
   margin-top: 10px;
   background-color: transparent;
   color: #289207;
-  border: 1px solid rgba(6, 145, 29, 0.3);
+  border: 1px solid rgba(6, 145, 29, 0.7);
   width: 100%;
 }
 
 .question button:hover {
   background-color: #59b83c;
   color: white;
+}
+
+.question-detail {
+  display: flex;
+  flex-direction: column;
+  flex-wrap: wrap;
+  align-content: center;
+  align-items: center;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.3);
+}
+
+.question-detail img {
+  width: 200px;
+  height: 200px;
+  border-radius: 50%;
+}
+
+.options {
+  display: flex;
+  flex-direction: row;
+}
+
+.option {
+  display: flex;
+  flex-direction: column;
+  flex-wrap: wrap;
+  align-content: center;
+  align-items: center;
+  border: 1px solid rgba(0, 0, 0, 0.3);
+  margin: 10px 20px 10px 20px;
+  border-radius: 5px;
+  min-width: 300px
+}
+
+.option p {
+  padding: 0 20px 0 20px
+}
+
+.option button {
+  width: 100%;
+  border-radius: 5px;
+  background-color: #228105;
+}
+
+.option button:disabled {
+  background-color: #51574f;
+  cursor: not-allowed
+}
+
+.user-row {
+  border-collapse: collapse;
+  width: 80%;
+  border-collapse: collapse;
+  margin: 20px auto;
+}
+
+.user-row div:first-child {
+  width: 50%;
+}
+
+.user-row div:first-child {
+  width: 10%;
+}
+
+.user-row {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+}
+
+.user-row>div {
+  flex: 1 1 auto;
+  display: flex;
+  justify-content: center;
+}
+
+.user-row>div:last-child {
+  flex-basis: 20%;
+  width: 20%;
+}
+
+.user-info {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  justify-content: flex-start !important;
+  width: 50%;
+  padding: 0px 10px 0px 10px
+}
+
+.user-info img {
+  margin: 0 10px 0 10px;
+}
+
+.user-info>div {
+  width: 100%;
+  white-space: nowrap;
+}
+
+.user-row.title {
+  border-bottom: 1px solid rgba(0, 0, 0, 0.3);
+  padding-bottom: 20px;
 }
