@@ -6,6 +6,7 @@ export const NewPollPage = ({ pollsData, dispatch }) => {
         <NewPoll
             authedUserId={authedUserId}
             dispatch={dispatch}
+            isLoading={pollsData.isLoading}
         />
     );
 };

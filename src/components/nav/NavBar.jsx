@@ -3,7 +3,8 @@ import { NavItem } from "./NavItem";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { pollsDataActions } from "../../store/pollsDataSlice";
-import { fetchQuestions, updateUserData } from "../../store/pollsDataAsyncActions";
+import { updateUserData } from "../../store/pollsDataAsyncActions";
+import { Modal } from "../common/Modal";
 
 const navItems = [
     {
@@ -24,7 +25,7 @@ export const NavBar = () => {
     const navigate = useNavigate();
     const dispatch = useDispatch();
     const userData = useSelector((state) => state.pollsData?.userData);
-    const questionsData = useSelector((state) => state.pollsData?.questionsData);
+    const isLoading = useSelector((state) => state.pollsData?.isLoading);
 
     useEffect(() => {
         const authedUsername = localStorage.getItem("username");
@@ -35,12 +36,6 @@ export const NavBar = () => {
         }
     }, [dispatch, navigate, userData]);
 
-    useEffect(() => {
-        if (!questionsData || Object.keys(questionsData).length === 0) {
-            dispatch(fetchQuestions());
-        }
-    }, [dispatch, questionsData]);
-
     const onLogOut = () => {
         localStorage.removeItem("username");
         dispatch(pollsDataActions.clearData());
@@ -49,6 +44,7 @@ export const NavBar = () => {
 
     return (
         <nav className="navbar">
+            {isLoading && <Modal />}
             <ul className="navbar-nav">
                 {navItems.map((item, index) => {
                     return (

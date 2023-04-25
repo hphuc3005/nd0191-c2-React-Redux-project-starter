@@ -132,12 +132,6 @@ function generateUID() {
   return Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15)
 }
 
-export function _getUser(username) {
-  return new Promise((resolve) => {
-    setTimeout(() => resolve(JSON.stringify(users[username])), 100)
-  })
-}
-
 export function _getUsers() {
   return new Promise((resolve) => {
     setTimeout(() => resolve({ ...users }), 1000)
@@ -179,7 +173,13 @@ export function _saveQuestion(question) {
         [formattedQuestion.id]: formattedQuestion
       }
 
-      users[question.author].questions.push(formattedQuestion.id)
+      users = {
+        ...users,
+        [question.author]: {
+          ...users[question.author],
+          questions: users[question.author].questions.concat([formattedQuestion.id])
+        }
+      }
 
       resolve(formattedQuestion)
     }, 1000)

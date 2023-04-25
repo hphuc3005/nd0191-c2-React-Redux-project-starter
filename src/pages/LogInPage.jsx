@@ -1,7 +1,7 @@
 import { LogInForm } from "../components/forms/LogInForm";
 import { Navigate } from "react-router-dom";
 
-export const LogInPage = (props) => {
+export const LogInPage = ({ dispatch, pollsData }) => {
     const isAuthenticated = localStorage.getItem("username");
     if (isAuthenticated) {
         return (
@@ -13,8 +13,8 @@ export const LogInPage = (props) => {
     }
     return (
         <LogInForm
-            formError={props.pollsData?.userData?.error}
-            dispatch={props.dispatch}
+            formError={pollsData?.userData?.error}
+            dispatch={dispatch}
         />
     );
 };

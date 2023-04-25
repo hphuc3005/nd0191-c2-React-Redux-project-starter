@@ -1,13 +1,19 @@
-import { useEffect, useState } from "react";
-import { getUserData } from "../helpers/apis";
+import { useEffect } from "react";
 import { QuestionDetail } from "../components/question/QuestionDetail";
-import { updateQuestionAnswer } from "../store/pollsDataAsyncActions";
+import {
+    fetchAllUsers,
+    fetchQuestions,
+    updateQuestionAnswer,
+} from "../store/pollsDataAsyncActions";
+import { NotFound } from "./NotFound";
 
 export const QuestionDetailPage = ({ router, pollsData, dispatch }) => {
     const questionId = router?.params?.questionId;
-    const questionData = pollsData?.questionsData[questionId];
-    const [author, setAuthor] = useState(null);
-    const authedUserId = pollsData.userData.id;
+    const questionData = pollsData?.questionsData.find((question) => question.id === questionId);
+    const authedUserId = pollsData?.userData.id;
+    const isLoading = pollsData.isLoading;
+    const author =
+        questionData?.author && pollsData?.allUsers && pollsData?.allUsers[questionData?.author];
 
     const handleAnswer = (answer) => {
         dispatch(
@@ -20,14 +26,22 @@ export const QuestionDetailPage = ({ router, pollsData, dispatch }) => {
     };
 
     useEffect(() => {
-        if (!author && questionData?.author) {
-            getUserData(questionData?.author).then((userData) => setAuthor(() => userData));
+        if (!questionData) {
+            dispatch(fetchQuestions());
         }
-    }, [author, questionData?.author]);
+    }, [dispatch, questionData]);
+
+    useEffect(() => {
+        if (!author?.id) {
+            dispatch(fetchAllUsers());
+        }
+    }, [author, dispatch]);
+
+    console.log(!isLoading, authedUserId, author?.id, !questionData);
 
     return (
         <div>
-            {questionData && author && (
+            {questionData && author?.id && (
                 <QuestionDetail
                     questionData={questionData}
                     authorData={author}
@@ -36,6 +50,11 @@ export const QuestionDetailPage = ({ router, pollsData, dispatch }) => {
                     authedUserId={authedUserId}
                 />
             )}
+            {!isLoading &&
+                authedUserId &&
+                pollsData?.allUsers &&
+                Object.keys(pollsData?.allUsers).length > 0 &&
+                !questionData?.id && <NotFound />}
         </div>
     );
 };

@@ -1,32 +1,12 @@
-import { useEffect, useState } from "react";
-import { getAllUsersData } from "../helpers/apis";
+import { useEffect } from "react";
 import { UserRow } from "../components/leaderboard/UserRow";
+import { updateLeaderboard } from "../store/pollsDataAsyncActions";
 
-export const LeaderboardPage = () => {
-    const [allUser, setAllUser] = useState(null);
+export const LeaderboardPage = ({ dispatch, pollsData }) => {
+    const leaderboardData = pollsData?.leaderboardData;
     useEffect(() => {
-        if (!allUser) {
-            getAllUsersData().then((data) => setAllUser(() => data && Object.values(data)));
-            getAllUsersData().then((user) => {
-                const usersData = Object.values(user).map((user) => {
-                    return {
-                        name: user?.name,
-                        id: user?.id,
-                        avatarURL: user.avatarURL,
-                        answers: (user?.answers && Object.keys(user.answers)?.length) || 0,
-                        created: user?.questions?.length || 0,
-                    };
-                });
-                usersData.sort((a, b) => {
-                    if (a.answers === b.answers) {
-                        return a.created - b.created;
-                    }
-                    return b.answers - a.answers;
-                });
-                setAllUser(() => usersData);
-            });
-        }
-    }, [allUser]);
+        dispatch(updateLeaderboard());
+    }, [dispatch]);
     return (
         <>
             <div className="user-row title">
@@ -43,8 +23,8 @@ export const LeaderboardPage = () => {
                     <strong>Created</strong>
                 </div>
             </div>
-            {allUser &&
-                allUser.map((user, index) => {
+            {Array.isArray(leaderboardData) &&
+                leaderboardData.map((user, index) => {
                     return (
                         <UserRow
                             userData={user}

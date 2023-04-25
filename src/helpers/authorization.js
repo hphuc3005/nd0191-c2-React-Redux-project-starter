@@ -1,4 +1,4 @@
-import { _getUser } from "../_DATA";
+import { _getUsers } from "../_DATA";
 
 export const checkAuthorization = async ({ userid }) => {
     const username = localStorage.username;
@@ -6,9 +6,10 @@ export const checkAuthorization = async ({ userid }) => {
         return null
     }
     let user
-    await _getUser(username).then(
-        userData => {
-            user = userData && JSON.parse(userData)
+    await _getUsers().then(
+        res => {
+            user = res
+                && res[username || userid]
         }
     )
     if (!user || !user.id || username !== user.id) {
@@ -23,9 +24,10 @@ export const isLoginSucceeded = async ({ username, password }) => {
         throw new Error(errorMessage);
     }
     let user
-    await _getUser(username).then(
-        userData => {
-            user = userData && JSON.parse(userData)
+    await _getUsers().then(
+        res => {
+            user = res
+                && res[username]
         }
     )
     if (!user || !user.id || username !== user.id || password !== user.password) {

@@ -5,6 +5,7 @@ import { HomePage } from "./pages/HomePage";
 import { QuestionDetailPage } from "./pages/QuestionDetailPage";
 import { LeaderboardPage } from "./pages/LeaderboardPage";
 import { NewPollPage } from "./pages/NewPollPage";
+import { NotFound } from "./pages/NotFound";
 
 const withRouter = (Component) => {
     const ComponentWithRouterProp = (props) => {
@@ -64,6 +65,13 @@ const routes = [
             const MappedComponent = mappedComponent(HomePage)
             return <MappedComponent {...props} />
         }
+    },
+    {
+        path: "*",
+        main: (props) => {
+            const MappedComponent = mappedComponent(NotFound)
+            return <MappedComponent {...props} />
+        },
     },
 ];
 

@@ -19,7 +19,7 @@ export const Input = ({
                 name={inputName}
                 type={inputType}
                 required={required}
-                onBlur={(e) => onChangeValue(inputName, e.target.value)}
+                onChange={(e) => onChangeValue(inputName, e.target.value)}
                 placeholder={placeholder}
             />
         </div>
