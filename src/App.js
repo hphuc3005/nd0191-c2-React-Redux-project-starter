@@ -1,16 +1,26 @@
-import logo from './logo.svg';
+// import logo from './logo.svg';
 import './App.css';
-import { BrowserRouter, Routes } from 'react-router-dom';
+import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import { renderRoutes } from './routes';
 import { NavBar } from './components/nav/NavBar';
+import { LogInPage } from './pages/LogInPage';
+import { NotFoundPage } from './pages/NotFoundPage';
 
 function App() {
-  const props = {}
+  const unauthedRoutes = (
+    <>
+      <Route path='/login' element={<LogInPage />} />
+      <Route path='*' element={<NotFoundPage />} />
+    </>
+  )
 
   return (
     <BrowserRouter>
       <NavBar />
-      {props && <Routes>{renderRoutes({ ...props })}</Routes>}
+      {<Routes>
+        {renderRoutes()}
+        {unauthedRoutes}
+      </Routes>}
     </BrowserRouter>
   );
 }

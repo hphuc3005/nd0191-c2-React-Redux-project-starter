@@ -5,8 +5,10 @@ import { updateLeaderboard } from "../store/pollsDataAsyncActions";
 export const LeaderboardPage = ({ dispatch, pollsData }) => {
     const leaderboardData = pollsData?.leaderboardData;
     useEffect(() => {
-        dispatch(updateLeaderboard());
-    }, [dispatch]);
+        if (pollsData?.userData?.id) {
+            dispatch(updateLeaderboard());
+        }
+    }, [dispatch, pollsData?.userData?.id]);
     return (
         <>
             <div className="user-row title">
@@ -17,7 +19,7 @@ export const LeaderboardPage = ({ dispatch, pollsData }) => {
                     <strong>Users</strong>
                 </div>
                 <div>
-                    <strong>Answers</strong>
+                    <strong>Voted</strong>
                 </div>
                 <div>
                     <strong>Created</strong>

@@ -1,19 +1,16 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { QuestionDetail } from "../components/question/QuestionDetail";
-import {
-    fetchAllUsers,
-    fetchQuestions,
-    updateQuestionAnswer,
-} from "../store/pollsDataAsyncActions";
-import { NotFound } from "./NotFound";
+import { updateQuestionAnswer } from "../store/pollsDataAsyncActions";
+import { NotFoundPage } from "./NotFoundPage";
+import { getQuestion, getUserData } from "../helpers/apis";
+import { Modal } from "../components/common/Modal";
 
 export const QuestionDetailPage = ({ router, pollsData, dispatch }) => {
     const questionId = router?.params?.questionId;
-    const questionData = pollsData?.questionsData.find((question) => question.id === questionId);
     const authedUserId = pollsData?.userData.id;
-    const isLoading = pollsData.isLoading;
-    const author =
-        questionData?.author && pollsData?.allUsers && pollsData?.allUsers[questionData?.author];
+    const [questionData, setQuestionData] = useState(null);
+    const [author, setAuthor] = useState(null);
+    const [completed, setCompleted] = useState(false);
 
     const handleAnswer = (answer) => {
         dispatch(
@@ -23,25 +20,41 @@ export const QuestionDetailPage = ({ router, pollsData, dispatch }) => {
                 answer,
             })
         );
+        getQuestion(questionId).then((res) => {
+            if (res?.id) {
+                setQuestionData(() => res);
+            }
+        });
     };
 
     useEffect(() => {
-        if (!questionData) {
-            dispatch(fetchQuestions());
+        if (!completed && (!questionData?.id || !author?.id)) {
+            getQuestion(questionId)
+                .then((res) => {
+                    if (res?.id) {
+                        setQuestionData(() => res);
+                    }
+                    return res;
+                })
+                .then(async (res) => {
+                    let author;
+                    if (res?.author) {
+                        author = await getUserData(res.author);
+                    }
+                    return author;
+                })
+                .then((res) => {
+                    if (res?.id) {
+                        setAuthor(() => res);
+                    }
+                    setCompleted(() => true);
+                });
         }
-    }, [dispatch, questionData]);
-
-    useEffect(() => {
-        if (!author?.id) {
-            dispatch(fetchAllUsers());
-        }
-    }, [author, dispatch]);
-
-    console.log(!isLoading, authedUserId, author?.id, !questionData);
+    }, [author?.id, completed, dispatch, questionData, questionId]);
 
     return (
         <div>
-            {questionData && author?.id && (
+            {completed && questionData && author?.id && (
                 <QuestionDetail
                     questionData={questionData}
                     authorData={author}
@@ -50,11 +63,8 @@ export const QuestionDetailPage = ({ router, pollsData, dispatch }) => {
                     authedUserId={authedUserId}
                 />
             )}
-            {!isLoading &&
-                authedUserId &&
-                pollsData?.allUsers &&
-                Object.keys(pollsData?.allUsers).length > 0 &&
-                !questionData?.id && <NotFound />}
+            {!completed && (!author?.id || !questionData?.id) && <Modal />}
+            {completed && (!author?.id || !questionData?.id) && <NotFoundPage />}
         </div>
     );
 };

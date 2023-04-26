@@ -1,19 +1,22 @@
+import { useDispatch, useSelector } from "react-redux";
 import { LogInForm } from "../components/forms/LogInForm";
-import { Navigate } from "react-router-dom";
+import { Navigate, useLocation } from "react-router-dom";
 
-export const LogInPage = ({ dispatch, pollsData }) => {
-    const isAuthenticated = localStorage.getItem("username");
-    if (isAuthenticated) {
+export const LogInPage = () => {
+    const dispatch = useDispatch();
+    const authedUser = useSelector((state) => state.pollsData?.userData);
+    const { state } = useLocation();
+    if (authedUser?.id) {
         return (
             <Navigate
-                to="/"
+                to={state?.path || "/"}
                 replace={true}
             />
         );
     }
     return (
         <LogInForm
-            formError={pollsData?.userData?.error}
+            formError={authedUser?.error}
             dispatch={dispatch}
         />
     );

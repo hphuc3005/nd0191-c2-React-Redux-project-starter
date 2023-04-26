@@ -1,11 +1,9 @@
-import { Route, useLocation, useNavigate, useParams } from "react-router-dom";
-import { connect, useDispatch } from "react-redux";
-import { LogInPage } from "./pages/LogInPage";
+import { Navigate, Route, useLocation, useNavigate, useParams } from "react-router-dom";
+import { connect, useDispatch, useSelector } from "react-redux";
 import { HomePage } from "./pages/HomePage";
 import { QuestionDetailPage } from "./pages/QuestionDetailPage";
 import { LeaderboardPage } from "./pages/LeaderboardPage";
 import { NewPollPage } from "./pages/NewPollPage";
-import { NotFound } from "./pages/NotFound";
 
 const withRouter = (Component) => {
     const ComponentWithRouterProp = (props) => {
@@ -13,7 +11,16 @@ const withRouter = (Component) => {
         let navigate = useNavigate();
         let params = useParams();
         const dispatch = useDispatch();
-        return <Component {...props} router={{ location, navigate, params }} dispatch={dispatch} />;
+        const userId = useSelector((state) => state.pollsData?.userData?.id);
+        return userId ? (
+            <Component
+                {...props}
+                router={{ location, navigate, params }}
+                dispatch={dispatch}
+            />
+        ) : (
+            <Navigate to="/login" replace state={{ path: location.pathname }} />
+        );
     };
 
     return ComponentWithRouterProp;
@@ -22,70 +29,59 @@ const withRouter = (Component) => {
 const mapStateToProps = (store, props) => {
     return {
         ...store,
-        ...props
+        ...props,
     };
 };
 
 const mappedComponent = (Component) => {
-    return withRouter(connect(mapStateToProps)(Component))
-}
+    return withRouter(connect(mapStateToProps)(Component));
+};
 
 const routes = [
     {
         path: "/add",
         main: (props) => {
-            const MappedComponent = mappedComponent(NewPollPage)
-            return <MappedComponent {...props} />
+            const MappedComponent = mappedComponent(NewPollPage);
+            return <MappedComponent {...props} />;
         },
     },
     {
         path: "/leaderboard",
         main: (props) => {
-            const MappedComponent = mappedComponent(LeaderboardPage)
-            return <MappedComponent {...props} />
-        },
-    },
-    {
-        path: "/login",
-        main: (props) => {
-            const MappedComponent = mappedComponent(LogInPage)
-            return <MappedComponent {...props} />
+            const MappedComponent = mappedComponent(LeaderboardPage);
+            return <MappedComponent {...props} />;
         },
     },
     {
         path: "/:questionId",
         main: (props) => {
-            const MappedComponent = mappedComponent(QuestionDetailPage)
-            return <MappedComponent {...props} />
+            const MappedComponent = mappedComponent(QuestionDetailPage);
+            return <MappedComponent {...props} />;
         },
     },
     {
         path: "",
         main: (props) => {
-            const MappedComponent = mappedComponent(HomePage)
-            return <MappedComponent {...props} />
-        }
-    },
-    {
-        path: "*",
-        main: (props) => {
-            const MappedComponent = mappedComponent(NotFound)
-            return <MappedComponent {...props} />
+            const MappedComponent = mappedComponent(HomePage);
+            return <MappedComponent {...props} />;
         },
     },
 ];
 
 export const renderRoutes = (props) => {
-    return routes && routes.map((route, index) => {
-        return (
-            <Route
-                key={index}
-                path={route.path}
-                element={route.main(props)}
-                {...props}
-            />
-        );
-    });
-}
+    return (
+        routes &&
+        routes.map((route, index) => {
+            return (
+                <Route
+                    key={index}
+                    path={route.path}
+                    element={route.main(props)}
+                    {...props}
+                />
+            );
+        })
+    );
+};
 
 export default routes;

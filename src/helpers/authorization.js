@@ -1,18 +1,14 @@
 import { _getUsers } from "../_DATA";
 
 export const checkAuthorization = async ({ userid }) => {
-    const username = localStorage.username;
-    if (!username && !userid) {
-        return null
-    }
     let user
     await _getUsers().then(
         res => {
             user = res
-                && res[username || userid]
+                && res[userid]
         }
     )
-    if (!user || !user.id || username !== user.id) {
+    if (!user || !user.id) {
         return null
     }
     return user
@@ -33,6 +29,5 @@ export const isLoginSucceeded = async ({ username, password }) => {
     if (!user || !user.id || username !== user.id || password !== user.password) {
         throw new Error(errorMessage);
     }
-    localStorage.username = username
     return user
 }

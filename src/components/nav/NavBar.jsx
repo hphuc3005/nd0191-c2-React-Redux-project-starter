@@ -1,9 +1,7 @@
 import { useNavigate } from "react-router-dom";
 import { NavItem } from "./NavItem";
-import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { pollsDataActions } from "../../store/pollsDataSlice";
-import { updateUserData } from "../../store/pollsDataAsyncActions";
 import { Modal } from "../common/Modal";
 
 const navItems = [
@@ -26,15 +24,6 @@ export const NavBar = () => {
     const dispatch = useDispatch();
     const userData = useSelector((state) => state.pollsData?.userData);
     const isLoading = useSelector((state) => state.pollsData?.isLoading);
-
-    useEffect(() => {
-        const authedUsername = localStorage.getItem("username");
-        if (!authedUsername && !userData?.id) {
-            navigate("/login");
-        } else if (authedUsername && !userData?.id) {
-            dispatch(updateUserData({ userid: authedUsername }));
-        }
-    }, [dispatch, navigate, userData]);
 
     const onLogOut = () => {
         localStorage.removeItem("username");

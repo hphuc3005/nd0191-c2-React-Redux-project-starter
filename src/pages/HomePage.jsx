@@ -1,6 +1,7 @@
 import { useEffect } from "react";
 import { QuestionsBlock } from "../components/question/QuestionsBlock";
 import { fetchQuestions } from "../store/pollsDataAsyncActions";
+import { Tabs } from "../components/common/Tabs";
 
 export const HomePage = ({ pollsData, dispatch }) => {
     const questionsData = pollsData?.questionsData;
@@ -25,18 +26,35 @@ export const HomePage = ({ pollsData, dispatch }) => {
 
     return (
         <div className="home">
-            {unansweredQuestions && (
-                <QuestionsBlock
-                    questions={unansweredQuestions}
-                    title={"New Questions"}
+            <div className="warpper">
+                <Tabs
+                    tabList={[
+                        { id: "one", label: "New Questions" },
+                        { id: "two", label: "Answered Questions" },
+                    ]}
+                    indexDefaultChecked={0}
                 />
-            )}
-            {answeredQuestions && (
-                <QuestionsBlock
-                    questions={answeredQuestions}
-                    title={"Done"}
-                />
-            )}
+                <div className="panels">
+                    <div
+                        className="panel"
+                        id="one-panel"
+                    >
+                        <QuestionsBlock
+                            questions={unansweredQuestions}
+                            title={"New Questions"}
+                        />
+                    </div>
+                    <div
+                        className="panel"
+                        id="two-panel"
+                    >
+                        <QuestionsBlock
+                            questions={answeredQuestions}
+                            title={"Answered Questions"}
+                        />
+                    </div>
+                </div>
+            </div>
         </div>
     );
 };

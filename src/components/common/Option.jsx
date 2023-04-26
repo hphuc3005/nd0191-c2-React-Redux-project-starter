@@ -11,7 +11,7 @@ export const Option = ({ value, handleClick, option, selected, disabled }) => {
                 <p>{value}</p>
             </div>
             <Button
-                text={selected ? "Chosen" : "Click"}
+                text={selected ? "Your Choice" : "Vote"}
                 disabled={disabled}
                 onClick={onClick}
             />

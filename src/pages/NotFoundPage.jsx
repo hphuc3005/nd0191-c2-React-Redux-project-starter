@@ -1,4 +1,4 @@
-export const NotFound = () => {
+export const NotFoundPage = () => {
     return (
         <div id="block-404">
             <div className="fof">
