@@ -2,9 +2,10 @@ import { updateQuestion } from "../../store/pollsDataAsyncActions";
 import { Form } from "../common/Form";
 import { Input } from "../common/Input";
 
-export const NewPoll = ({ authedUserId, dispatch, isLoading }) => {
+export const NewPoll = ({ authedUserId, dispatch, isLoading, navigate }) => {
     const handleSubmit = (formData) => {
         dispatch(updateQuestion({ ...formData, author: authedUserId }));
+        navigate("/");
     };
 
     return (

@@ -16,6 +16,7 @@ export const Input = ({
             </label>
             <input
                 id={inputName}
+                data-testid={inputName}
                 name={inputName}
                 type={inputType}
                 required={required}

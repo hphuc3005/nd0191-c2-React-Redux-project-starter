@@ -7,7 +7,7 @@ export const Question = ({ questionId, createdUser, createdTime }) => {
         <div className="question">
             <h4>{createdUser}</h4>
             <small>{convertedTime.toLocaleString()}</small>
-            <Link to={questionId}>
+            <Link to={`questions/${questionId}`}>
                 <Button text={"Show"} />
             </Link>
         </div>

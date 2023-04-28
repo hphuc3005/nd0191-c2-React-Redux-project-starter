@@ -7,7 +7,7 @@ import { Modal } from "../components/common/Modal";
 
 export const QuestionDetailPage = ({ router, pollsData, dispatch }) => {
     const questionId = router?.params?.questionId;
-    const authedUserId = pollsData?.userData.id;
+    const authedUserId = pollsData?.userData?.id;
     const [questionData, setQuestionData] = useState(null);
     const [author, setAuthor] = useState(null);
     const [completed, setCompleted] = useState(false);

@@ -53,7 +53,7 @@ const routes = [
         },
     },
     {
-        path: "/:questionId",
+        path: "questions/:questionId",
         main: (props) => {
             const MappedComponent = mappedComponent(QuestionDetailPage);
             return <MappedComponent {...props} />;

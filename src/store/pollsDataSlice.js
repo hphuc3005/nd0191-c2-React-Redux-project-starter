@@ -8,7 +8,7 @@ import {
 } from "./pollsDataAsyncActions";
 import { fetchQuestions } from "./pollsDataAsyncActions";
 
-const initPollsData = {
+export const initPollsData = {
     userData: {},
     questionsData: [],
     leaderboardData: [],

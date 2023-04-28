@@ -9,7 +9,7 @@ export const UserInfo = ({ userData }) => {
                 <div>
                     <strong>{userData.name}</strong>
                 </div>
-                <div>{userData.id}</div>
+                <div>{userData?.id}</div>
             </div>
         </div>
     );

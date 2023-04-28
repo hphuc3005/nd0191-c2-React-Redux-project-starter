@@ -36,6 +36,7 @@ export const QuestionDetail = ({
             <div className="options">
                 <Option
                     key={"option-one"}
+                    id={"option-one"}
                     value={optionOne.text}
                     option={"optionOne"}
                     handleClick={onSelect}
@@ -44,6 +45,7 @@ export const QuestionDetail = ({
                 />
                 <Option
                     key={"option-two"}
+                    id={"option-two"}
                     value={optionTwo.text}
                     option={"optionTwo"}
                     handleClick={onSelect}

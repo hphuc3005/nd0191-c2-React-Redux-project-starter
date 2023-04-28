@@ -14,7 +14,7 @@ const navItems = [
         link: "/leaderboard",
     },
     {
-        label: "New",
+        label: "Create New Poll",
         link: "/add",
     },
 ];
@@ -45,7 +45,7 @@ export const NavBar = () => {
                     );
                 })}
             </ul>
-            {userData.id && (
+            {userData?.id && (
                 <ul className="user-menu">
                     <div className="navbar-user-avatar">
                         <img
@@ -54,7 +54,7 @@ export const NavBar = () => {
                         />
                     </div>
                     <li className="user-menu-item">
-                        <p>{userData.id}</p>
+                        <p>{userData?.id}</p>
                     </li>
                     <li className="user-menu-item">
                         <button onClick={onLogOut}>Logout</button>

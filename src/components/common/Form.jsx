@@ -25,13 +25,24 @@ export const Form = ({ formLabel, submitText, children, handleSubmit, formError,
     };
 
     return (
-        <form onSubmit={onSubmit}>
+        <form
+            onSubmit={onSubmit}
+            data-testid={"form"}
+        >
             <h1>{formLabel}</h1>
             {extraTitle}
             {renderChildren()}
-            {formError && <div className="error">{formError}</div>}
+            {formError && (
+                <div
+                    className="error"
+                    data-testid={"form-error"}
+                >
+                    {formError}
+                </div>
+            )}
             <br />
             <Button
+                id={"submit-button"}
                 type={"submit"}
                 text={submitText}
             />
